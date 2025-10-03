@@ -5,11 +5,14 @@
   "scripts": {
     "dev": "nodemon src/index.js"
   },
-  "author": "",
+  "author": "Alexi_Dg",
   "license": "ISC",
-  "description": "",
+  "description": "This is a my first backend project in express, which will serve as a pillar for my learning",
   "dependencies": {
     "express": "^5.1.0",
     "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.3"
   }
 }

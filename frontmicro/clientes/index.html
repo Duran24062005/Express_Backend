@@ -1,44 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Micro Front</title>
-    <link rel="stylesheet" href="./styles.css">
-     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="shortcut icon" href="../img/AlexiDgLogo_Backgroundless.png" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Micro Front</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="shortcut icon" href="../img/AlexiDgLogo_Backgroundless.png" type="image/x-icon">
 </head>
-<body>
-    <div class="container flex text-center my-4">
-        <h1 class="text-center text-3xl my-6">Consumo de apis de Express</h1>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="py-6 bg-gray-800 shadow-md">
+    <div class="container mx-auto text-center">
+      <h1 class="text-4xl font-bold text-yellow-400">Consumo de APIs de Express</h1>
     </div>
-    <div>
-        <h1>Users</h1>
-        <div class="flex gap-2" id="divContainer">
-            <div class="border-1 border-green-300 w-60 text-center">
-                <h2>Alexi</h2>
-                <p>Edad: 20</p>
-                <p>phone: 33445</p>
-                <p>addres:</p>
-                <ul>
-                    <li>Ciudad: Bucaramanga</li>
-                    <li>Street: Provenza</li>
-                    <li>Ubi: Calle 234 #-ofof</li>
-                </ul>
-            </div>
-            <div class="border-1 border-green-300 w-60 text-center">
-                <h2>Alexi</h2>
-                <p>Edad: 20</p>
-                <p>phone: 33445</p>
-                <p>addres:</p>
-                <ul>
-                    <li>Ciudad: Bucaramanga</li>
-                    <li>Street: Provenza</li>
-                    <li>Ubi: Calle 234 #-ofof</li>
-                </ul>
-            </div>
-        </div>
+  </header>
+
+  <!-- Users Section -->
+  <main class="flex-1 container mx-auto px-4 py-10">
+    <h2 class="text-2xl mb-6 font-semibold border-b border-gray-700 inline-block pb-1">Usuarios</h2>
+    <div id="divContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Cards dinámicas -->
     </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-4 bg-gray-800 text-center text-sm text-gray-400">
+    © 2025 - Proyecto Backend Express · <span class="text-yellow-400">Alexi_Dg</span>
+  </footer>
+
+  <script src="./script.js"></script>
 </body>
-<script src="./script.js"></script>
 </html>

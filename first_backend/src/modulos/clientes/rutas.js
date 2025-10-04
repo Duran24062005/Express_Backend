@@ -6,7 +6,7 @@ const controlador = require('./controlador.js')
 const router = express.Router();
 
 
-router.get('/', (req, res) => {
+router.get('/', async(req, res) => {
     const todos = controlador.todos().then( (items) => {
         respuesta.success(req, res, items, 200);
 

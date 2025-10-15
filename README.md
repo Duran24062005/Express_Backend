@@ -319,3 +319,9 @@ Una vez que domines los conceptos básicos, puedes explorar:
 
 
 ¡Felicitaciones! Ahora tienes las bases para comenzar a desarrollar aplicaciones backend con Express.js.
+
+
+
+https://www.youtube.com/watch?v=iOhIV0_23qc&list=PLnfMiP0v59hAUA6QJNKBwKJyq5_gFkCYL&index=4
+
+[Despliegue en vercel](https://dev.to/arindam_1729/deploy-your-express-backend-in-vercel-for-free-1321)

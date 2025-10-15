@@ -2,7 +2,13 @@
 
 Dotenv instaled in development dependences
 ```cmd
-npm i dotenv -D
+    npm i dotenv -D
+```
+
+
+## Init project command
+```cmd
+    npm run dev
 ```
 
 

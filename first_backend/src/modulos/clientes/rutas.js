@@ -14,4 +14,10 @@ router.get('/', async(req, res) => {
 });
 
 
+router.get('/:id', async (req, res) => {
+    const item = await controlador.uno(req.params.id);
+    respuesta.success(req, res, item, 200);
+});
+
+
 module.exports = router;

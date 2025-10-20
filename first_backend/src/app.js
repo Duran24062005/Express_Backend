@@ -1,5 +1,6 @@
 //src/app.js
 const express = require('express');
+const morgan = require('morgan');
 const config = require('./config');
 const cors = require('cors');
 
@@ -8,6 +9,9 @@ const clientes = require('./modulos/clientes/rutas');
 
 
 const app = express();
+
+// Middleware
+app.use(morgan('dev'));
 
 app.use(cors({
   origin: 'http://127.0.0.1:5500'

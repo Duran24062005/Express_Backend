@@ -7,8 +7,8 @@ function todos() {
     return datos.todos(tabla);
 };
 
-function uno() {
-    
+function uno(id) {
+    return datos.uno(tabla, id);
 };
 
 function agregar() {

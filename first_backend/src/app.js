@@ -6,12 +6,15 @@ const cors = require('cors');
 
 
 const clientes = require('./modulos/clientes/rutas');
+const errors = require('./red/error')
 
 
 const app = express();
 
 // Middleware
 app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 app.use(cors({
   origin: 'http://127.0.0.1:5500'
@@ -30,6 +33,8 @@ app.get('/hola', (req, res) => res.send('<h1>Hola estas en tu primera App de Bac
 
 app.use('/api/clientes', clientes);
 
+
+app.use(errors);
 
 
 module.exports = app;

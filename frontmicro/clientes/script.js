@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       container.innerHTML += `
         <div class="bg-gray-800 border border-gray-700 rounded-2xl p-4 shadow-lg hover:scale-[1.02] transition-transform">
           <h3 class="text-lg font-semibold text-yellow-400 mb-2">${u.nombre}</h3>
+          <p><span class="font-medium">Id:</span> ${u.id ?? 'N/A'}</p>
           <p><span class="font-medium">Edad:</span> ${u.edad ?? 'N/A'}</p>
           <p><span class="font-medium">Profesión:</span> ${u.profesion ?? 'N/A'}</p>
         </div>
@@ -31,5 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   const data = await getUsers();
+  console.log(data);
+  
   renderUsers(data.body);
 });

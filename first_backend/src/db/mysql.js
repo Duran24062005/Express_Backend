@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
 const config = require('../config.js');
+const { error } = require('../red/respuestas.js');
 
 
 const dbConfig = {
@@ -58,7 +59,14 @@ function uno(tabla, id) {
 };
 
 function agregar(tabla, datos) {
-    
+    return new Promise((resolve, reject) => {
+      connection.query(`UPDATE ${tabla} SET `, (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(result);
+      })
+    })
 };
 
 function eliminar(tabla, id) {

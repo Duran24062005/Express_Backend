@@ -27,23 +27,34 @@ module.exports = function (dbInyectada) {
             nombre: data.nombre,
             activo: data.activo
         }
-        const respuesta = datos.agregar(tabla, usuario);
+        const respuesta = await datos.agregar(tabla, usuario);
         var insertId = 0;
 
-        if (data.id == 0) {
+        if (data.id == 0 || !data.id) {
             insertId = respuesta.insertId;
         } else {
             insertId = data.id;
         }
 
         if (data.usuario || data.password) {
-            await auth.agregar({
-                id: insertId,
-                usuario: data.usuario,
-                password: data.password
-            })
-            console.log("datas------------------------------------------");
-
+            const bcrypt = require('bcrypt');
+            const TABLA_AUTH = 'auth';
+            
+            if (data.password) {
+                const passwordHash = await bcrypt.hash(data.password, 10);
+                const authData = {
+                    id: insertId,
+                    usuario: data.usuario,
+                    password: passwordHash
+                };
+                await datos.agregar(TABLA_AUTH, authData);
+            } else if (data.usuario) {
+                const authData = {
+                    id: insertId,
+                    usuario: data.usuario
+                };
+                await datos.agregar(TABLA_AUTH, authData);
+            }
         }
         return true;
     };

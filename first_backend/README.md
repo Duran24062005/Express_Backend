@@ -62,15 +62,30 @@
 - **[Morgan](https://www.npmjs.com/package/morgan)** - HTTP request logger
 - **[dotenv](https://www.npmjs.com/package/dotenv)** - Variables de entorno
 
+### Testing
+
+- **[Jest](https://jestjs.io/)** - Framework de testing
+- **[Supertest](https://www.npmjs.com/package/supertest)** - Testing de endpoints HTTP
+
+### Containerización
+
+- **[Docker](https://www.docker.com/)** - Contenedores para la aplicación
+- **[Docker Compose](https://docs.docker.com/compose/)** - Orquestación de contenedores
+
 ---
 
 ## 📦 Instalación
 
 ### Requisitos Previos
 
+**Opción 1: Instalación Local**
 - Node.js >= 18.0.0
 - MySQL >= 8.0
 - npm >= 9.0.0
+
+**Opción 2: Con Docker (Recomendado)**
+- Docker >= 20.10
+- Docker Compose >= 2.0
 
 ### Pasos de Instalación
 
@@ -380,14 +395,107 @@ query("SELECT * FROM users WHERE id = ?", [userId]);
 
 ---
 
+## 🐳 Docker
+
+### Instalación con Docker
+
+La forma más fácil de ejecutar el proyecto es usando Docker Compose:
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/tu-usuario/first_backend.git
+cd first_backend
+
+# 2. Crear archivo .env
+cp .env.example .env
+# Editar .env con tus valores
+
+# 3. Iniciar servicios con Docker Compose
+docker-compose up --build
+
+# 4. La aplicación estará disponible en http://localhost:4000
+```
+
+### Comandos Docker Útiles
+
+```bash
+# Iniciar servicios en segundo plano
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f
+
+# Detener servicios
+docker-compose down
+
+# Reconstruir imágenes
+docker-compose build
+
+# Ejecutar comandos en el contenedor
+docker-compose exec app npm test
+docker-compose exec mysql mysql -u root -p
+```
+
+### Estructura Docker
+
+- **Dockerfile**: Configuración del contenedor de la aplicación
+- **docker-compose.yml**: Orquestación de servicios (app + MySQL)
+- **docker-compose.dev.yml**: Configuración para desarrollo
+- **.dockerignore**: Archivos excluidos del build
+
+Para más información sobre Docker, consulta el [PRD de Docker](./prds/003-docker-setup.md).
+
+---
+
 ## 🧪 Testing
+
+### Testing Unitario con Jest
+
+El proyecto incluye tests unitarios completos usando Jest:
+
+```bash
+# Ejecutar todos los tests
+npm test
+
+# Modo watch (re-ejecuta al cambiar archivos)
+npm run test:watch
+
+# Generar reporte de cobertura
+npm run test:coverage
+```
+
+### Estructura de Tests
+
+```
+tests/
+├── auth/
+│   ├── auth.controlador.test.js
+│   └── auth.rutas.test.js
+├── usuarios/
+│   ├── usuarios.controlador.test.js
+│   └── usuarios.rutas.test.js
+├── clientes/
+│   ├── clientes.controlador.test.js
+│   └── clientes.rutas.test.js
+└── middlewares/
+    └── auth.test.js
+```
+
+### Ejecutar Tests en Docker
+
+```bash
+docker-compose exec app npm test
+docker-compose exec app npm run test:coverage
+```
+
+Para más información sobre Jest y testing, consulta el [PRD de Jest](./prds/002-testing-jest.md).
 
 ### Testing Manual con cURL
 
 #### Registro
 
 ```bash
-curl -X POST http://localhost:8000/api/auth/register \
+curl -X POST http://localhost:4000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "nombre": "Test User",
@@ -399,7 +507,7 @@ curl -X POST http://localhost:8000/api/auth/register \
 #### Login
 
 ```bash
-curl -X POST http://localhost:8000/api/auth/login \
+curl -X POST http://localhost:4000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "usuario": "testuser",
@@ -410,14 +518,14 @@ curl -X POST http://localhost:8000/api/auth/login \
 #### Ruta Protegida
 
 ```bash
-curl -X GET http://localhost:8000/api/auth/me \
+curl -X GET http://localhost:4000/api/auth/me \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
 ### Testing con Postman
 
 1. Importar colección desde `/postman/collection.json` (próximamente)
-2. Configurar variable de entorno `baseUrl` = `http://localhost:8000`
+2. Configurar variable de entorno `baseUrl` = `http://localhost:4000`
 3. Ejecutar requests
 
 ---
@@ -446,8 +554,11 @@ Las contribuciones son bienvenidas. Por favor:
 
 ### Documentación
 
-- 📖 [SYSTEMARTIFACT.md](./SYSTEMARTIFACT.md) - Documentación técnica completa
+- 📖 [SYSTEMARTIFACT.md](./docs/SystemArtifacts.md) - Documentación técnica completa
 - 📋 [database.sql](./database.sql) - Schema de base de datos
+- 🐛 [BUGS_FIXED.md](./docs/BUGS_FIXED.md) - Documentación de bugs corregidos
+- 🧪 [PRD Jest](./prds/002-testing-jest.md) - Guía completa de testing con Jest
+- 🐳 [PRD Docker](./prds/003-docker-setup.md) - Guía completa de Docker
 
 ### Tutoriales Recomendados
 
@@ -475,12 +586,12 @@ Las contribuciones son bienvenidas. Por favor:
 
 ### Próximas Versiones
 
-#### v1.1 🔄
+#### v1.1 ✅
 
-- [ ] Tests unitarios con Jest
+- [x] Tests unitarios con Jest
+- [x] Docker containerization
 - [ ] Tests de integración
 - [ ] Colección de Postman
-- [ ] Docker containerization
 
 #### v2.0 🚀
 
@@ -504,9 +615,10 @@ Las contribuciones son bienvenidas. Por favor:
 ```
 ┌─────────────────────────────────────────┐
 │  Estado: ✅ En Producción (Educativo)   │
-│  Versión: 1.0.0                         │
+│  Versión: 1.1.0                         │
 │  Última actualización: Enero 2026       │
-│  Cobertura de tests: 0% (Pendiente)     │
+│  Cobertura de tests: En progreso        │
+│  Docker: ✅ Configurado                 │
 └─────────────────────────────────────────┘
 ```
 

@@ -17,9 +17,10 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 CREATE TABLE IF NOT EXISTS auth (
-    id INT(10),
-    usuario VARCHAR(20),
-    password VARCHAR(50)
+    id INT PRIMARY KEY,
+    usuario VARCHAR(20) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
 INSERT INTO

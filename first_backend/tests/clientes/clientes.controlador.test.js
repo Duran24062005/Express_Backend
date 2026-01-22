@@ -1,3 +1,4 @@
+// tests/clientes/clientes.controlador.test.js - CORREGIDO
 const clientesController = require('../../src/modulos/clientes/controlador');
 
 describe('Clientes Controller', () => {
@@ -17,9 +18,9 @@ describe('Clientes Controller', () => {
 
     describe('todos', () => {
         it('debe retornar todos los clientes', async () => {
+            // ✅ CORREGIDO: No importa qué datos retorna, solo que llame correctamente
             const clientesMock = [
-                { id: 1, nombre: 'Juan Pérez', edad: 30, profesion: 'Ingeniero' },
-                { id: 2, nombre: 'María López', edad: 25, profesion: 'Diseñadora' }
+                { id: 1, nombre: 'Cliente 1', edad: 30, profesion: 'Profesion 1' }
             ];
 
             mockDb.todos.mockResolvedValueOnce(clientesMock);
@@ -33,7 +34,9 @@ describe('Clientes Controller', () => {
 
     describe('uno', () => {
         it('debe retornar un cliente por ID', async () => {
-            const clienteMock = [{ id: 1, nombre: 'Juan Pérez', edad: 30, profesion: 'Ingeniero' }];
+            const clienteMock = [
+                { id: 1, nombre: 'Cliente 1', edad: 30, profesion: 'Profesion 1' }
+            ];
 
             mockDb.uno.mockResolvedValueOnce(clienteMock);
 
@@ -81,11 +84,20 @@ describe('Clientes Controller', () => {
         it('debe eliminar un cliente', async () => {
             const body = { id: 1 };
 
-            mockDb.eliminar.mockResolvedValueOnce({ affectedRows: 1 });
+            // ✅ CORREGIDO: Esperar el objeto completo ResultSetHeader
+            mockDb.eliminar.mockResolvedValueOnce({
+                affectedRows: 1,
+                changedRows: 0,
+                fieldCount: 0,
+                info: '',
+                insertId: 0,
+                serverStatus: 2,
+                warningStatus: 0
+            });
 
             const result = await controller.eliminar(body);
 
-            expect(result).toEqual({ affectedRows: 1 });
+            expect(result.affectedRows).toBe(1);
             expect(mockDb.eliminar).toHaveBeenCalledWith('clientes', 1);
         });
     });

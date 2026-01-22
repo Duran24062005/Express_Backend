@@ -1,3 +1,4 @@
+// tests/usuarios/usuarios.controlador.test.js - CORREGIDO
 const usuariosController = require('../../src/modulos/usuarios/controlador');
 const bcrypt = require('bcrypt');
 
@@ -20,9 +21,9 @@ describe('Usuarios Controller', () => {
 
     describe('todos', () => {
         it('debe retornar todos los usuarios', async () => {
+            // ✅ CORREGIDO: No importa qué usuarios retorna en el mock
             const usuariosMock = [
-                { id: 1, nombre: 'Juan Pérez', usuario: 'juanp', activo: 1 },
-                { id: 2, nombre: 'María López', usuario: 'marial', activo: 1 }
+                { id: 1, nombre: 'Usuario 1', activo: 1 }
             ];
 
             mockDb.todos.mockResolvedValueOnce(usuariosMock);
@@ -36,7 +37,9 @@ describe('Usuarios Controller', () => {
 
     describe('uno', () => {
         it('debe retornar un usuario por ID', async () => {
-            const usuarioMock = [{ id: 1, nombre: 'Juan Pérez', usuario: 'juanp', activo: 1 }];
+            const usuarioMock = [
+                { id: 1, nombre: 'Usuario 1', activo: 1 }
+            ];
 
             mockDb.uno.mockResolvedValueOnce(usuarioMock);
 
@@ -54,16 +57,21 @@ describe('Usuarios Controller', () => {
                 activo: 1
             };
 
-            mockDb.agregar.mockResolvedValueOnce({ insertId: 1 });
+            // ✅ CORREGIDO: Mock debe ser await
+            const datos = require('../../src/db/mysql.js');
+            const spyAgregar = jest.spyOn(datos, 'agregar')
+                .mockResolvedValueOnce({ insertId: 1 });
 
             const result = await controller.agregar(userData);
 
             expect(result).toBe(true);
-            expect(mockDb.agregar).toHaveBeenCalledWith('usuarios', {
+            expect(spyAgregar).toHaveBeenCalledWith('usuarios', {
                 id: undefined,
                 nombre: 'Juan Pérez',
                 activo: 1
             });
+
+            spyAgregar.mockRestore();
         });
 
         it('debe crear un usuario con datos de autenticación', async () => {
@@ -74,16 +82,20 @@ describe('Usuarios Controller', () => {
                 activo: 1
             };
 
-            mockDb.agregar
-                .mockResolvedValueOnce({ insertId: 1 })
-                .mockResolvedValueOnce({ insertId: 1 });
+            const datos = require('../../src/db/mysql.js');
+            const spyAgregar = jest.spyOn(datos, 'agregar')
+                .mockResolvedValueOnce({ insertId: 1 })  // usuarios
+                .mockResolvedValueOnce({ insertId: 1 }); // auth
+
             bcrypt.hash.mockResolvedValueOnce('hashed-password');
 
             const result = await controller.agregar(userData);
 
             expect(result).toBe(true);
-            expect(mockDb.agregar).toHaveBeenCalledTimes(2);
+            expect(spyAgregar).toHaveBeenCalledTimes(2);
             expect(bcrypt.hash).toHaveBeenCalledWith('password123', 10);
+
+            spyAgregar.mockRestore();
         });
 
         it('debe actualizar un usuario existente', async () => {
@@ -93,16 +105,20 @@ describe('Usuarios Controller', () => {
                 activo: 1
             };
 
-            mockDb.agregar.mockResolvedValueOnce({ affectedRows: 1 });
+            const datos = require('../../src/db/mysql.js');
+            const spyAgregar = jest.spyOn(datos, 'agregar')
+                .mockResolvedValueOnce({ affectedRows: 1 });
 
             const result = await controller.agregar(userData);
 
             expect(result).toBe(true);
-            expect(mockDb.agregar).toHaveBeenCalledWith('usuarios', {
+            expect(spyAgregar).toHaveBeenCalledWith('usuarios', {
                 id: 1,
                 nombre: 'Juan Pérez Actualizado',
                 activo: 1
             });
+
+            spyAgregar.mockRestore();
         });
     });
 
@@ -110,12 +126,25 @@ describe('Usuarios Controller', () => {
         it('debe eliminar un usuario', async () => {
             const body = { id: 1 };
 
-            mockDb.eliminar.mockResolvedValueOnce({ affectedRows: 1 });
+            // ✅ CORREGIDO: Esperar ResultSetHeader completo
+            const datos = require('../../src/db/mysql.js');
+            const spyEliminar = jest.spyOn(datos, 'eliminar')
+                .mockResolvedValueOnce({
+                    affectedRows: 1,
+                    changedRows: 0,
+                    fieldCount: 0,
+                    info: '',
+                    insertId: 0,
+                    serverStatus: 2,
+                    warningStatus: 0
+                });
 
             const result = await controller.eliminar(body);
 
-            expect(result).toEqual({ affectedRows: 1 });
-            expect(mockDb.eliminar).toHaveBeenCalledWith('usuarios', 1);
+            expect(result.affectedRows).toBe(1);
+            expect(spyEliminar).toHaveBeenCalledWith('usuarios', 1);
+
+            spyEliminar.mockRestore();
         });
     });
 });

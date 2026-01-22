@@ -8,7 +8,9 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "create-test-user": "node scripts/create-test-user.js",
-    "test-auth": "node scripts/test-auth-complete.js"
+    "test-auth": "node scripts/test-auth-complete.js",
+    "diagnose-auth": "node scripts/diagnose-auth.js",
+    "fix-auth": "node scripts/fix-missing-auth.js"
   },
   "author": "Alexi_Dg",
   "license": "ISC",

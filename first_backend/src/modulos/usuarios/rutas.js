@@ -34,10 +34,10 @@ async function agregar(req, res, next) {
     try {
         let message = '';
         const item = await controlador.agregar(req.body);
-        if (req.body.id == 0) {
-            message = 'Item eliminado correctamente';
+        if (item.error) {
+            message = 'No se puedo crear el usuario';
         } else {
-            message = 'Item eliminado correctamente';
+            message = 'Item creado correctamente';
         }
         respuesta.success(req, res, message, 201);
 
@@ -62,3 +62,21 @@ async function eliminar(req, res, next) {
 
 
 module.exports = router;
+
+
+/**
+ * try {
+        let message = '';
+        const item = await controlador.agregar(req.body);
+        if (req.body.id == 0) {
+            message = 'No existe este item';
+        } else {
+            message = 'Item eliminado correctamente';
+        }
+        respuesta.success(req, res, message, 201);
+
+    } catch (error) {
+        // respuesta.error(req, res, error, 500);
+        next(error);
+    }
+ */

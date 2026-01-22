@@ -1,6 +1,8 @@
-const datos = require('../../db/mysql');
+const datos = require('../../db/mysql.js');
 
-const tabla = 'clientes';
+const tabla = 'usuarios';
+
+
 
 module.exports = function (dbInyectada) {
 
@@ -18,8 +20,8 @@ module.exports = function (dbInyectada) {
         return datos.uno(tabla, id);
     };
 
-    function agregar(datos) {
-        return datos.agregar(tabla, datos)
+    function agregar(data) {
+        return datos.agregar(tabla, data);
     };
 
     function eliminar(body) {

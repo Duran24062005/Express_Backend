@@ -21,7 +21,7 @@ exports.error = function (req, res, message = "Error interno del servidor", stat
 
     // Si no viene un mensaje por defecto
     // const messageError = message || 'Error interno del servidor';
-    
+
     res.status(status).send({
         error: true,
         status: status,

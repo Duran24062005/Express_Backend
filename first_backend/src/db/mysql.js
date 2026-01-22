@@ -22,7 +22,7 @@ function conectionToMySql() {
 
     } else {
       console.log('DB connected.');
-      
+
     };
   });
 
@@ -33,7 +33,7 @@ function conectionToMySql() {
 
     } else {
       throw error;
-      
+
     };
   });
 };
@@ -41,47 +41,72 @@ function conectionToMySql() {
 conectionToMySql();
 
 function todos(tabla) {
-    return new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM ${tabla};`, (error, result ) => {
-        if (error) return reject(error);
-        resolve(result);
-      });
+  return new Promise((resolve, reject) => {
+    connection.query(`SELECT * FROM ${tabla};`, (error, result) => {
+      if (error) return reject(error);
+      resolve(result);
     });
+  });
 };
+
 
 function uno(tabla, id) {
-    return new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM ${tabla} WHERE id = ${id};`, (error, result ) => {
-        if (error) return reject(error);
-        resolve(result);
-      });
+  return new Promise((resolve, reject) => {
+    connection.query(`SELECT * FROM ${tabla} WHERE id = ${id};`, (error, result) => {
+      if (error) return reject(error);
+      resolve(result);
     });
+  });
 };
 
-function agregar(tabla, datos) {
-    return new Promise((resolve, reject) => {
-      connection.query(`UPDATE ${tabla} SET `, (error, result) => {
-        if (error) {
-          return reject(error);
-        }
-        resolve(result);
-      })
+
+function insertar(tabla, datos) {
+  return new Promise((resolve, reject) => {
+    console.log(datos.nombre, datos.usuario, datos.activo);
+
+    connection.query(`INSERT INTO ${tabla} (nombre, usuario, activo) VALUES ('${datos.nombre}', '${datos.usuario}', ${datos.activo});`, (error, result) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(result);
     })
+  })
 };
+
+
+function actualizar(tabla, datos, id) {
+  return new Promise((resolve, reject) => {
+    connection.query(`UPDATE ${tabla} SET ${datos} WHERE id=${id}`, (error, result) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve(result);
+    })
+  })
+};
+
+
+function agregar(tabla, data) {
+  if (data && !data.id) {
+    return insertar(tabla, data)
+  } else {
+    return actualizar(tabla, data, data.id)
+  }
+}
 
 function eliminar(tabla, id) {
-    return new Promise((resolve, reject) => {
-      connection.query(`DELETE FROM ${tabla} WHERE id = ${id};`, (error, result ) => {
-        if (error) return reject(error);
-        resolve(result);
-      });
+  return new Promise((resolve, reject) => {
+    connection.query(`DELETE FROM ${tabla} WHERE id = ${id};`, (error, result) => {
+      if (error) return reject(error);
+      resolve(result);
     });
+  });
 };
 
 
 module.exports = {
-    todos,
-    uno,
-    agregar,
-    eliminar
+  todos,
+  uno,
+  agregar,
+  eliminar
 };

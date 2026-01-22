@@ -1,6 +1,3 @@
-const datos = require('../../db/mysql.js');
-const auth = require('../auth/index.js');
-
 const tabla = 'usuarios';
 
 
@@ -14,11 +11,11 @@ module.exports = function (dbInyectada) {
     }
 
     function todos() {
-        return datos.todos(tabla);
+        return db.todos(tabla);
     };
 
     function uno(id) {
-        return datos.uno(tabla, id);
+        return db.uno(tabla, id);
     };
 
     async function agregar(data) {
@@ -27,7 +24,7 @@ module.exports = function (dbInyectada) {
             nombre: data.nombre,
             activo: data.activo
         }
-        const respuesta = await datos.agregar(tabla, usuario);
+        const respuesta = await db.agregar(tabla, usuario);
         var insertId = 0;
 
         if (data.id == 0 || !data.id) {
@@ -47,20 +44,20 @@ module.exports = function (dbInyectada) {
                     usuario: data.usuario,
                     password: passwordHash
                 };
-                await datos.agregar(TABLA_AUTH, authData);
+                await db.agregar(TABLA_AUTH, authData);
             } else if (data.usuario) {
                 const authData = {
                     id: insertId,
                     usuario: data.usuario
                 };
-                await datos.agregar(TABLA_AUTH, authData);
+                await db.agregar(TABLA_AUTH, authData);
             }
         }
         return true;
     };
 
     function eliminar(body) {
-        return datos.eliminar(tabla, body.id);
+        return db.eliminar(tabla, body.id);
     };
 
     return {

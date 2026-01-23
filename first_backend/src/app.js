@@ -3,6 +3,8 @@ const express = require('express');
 const morgan = require('morgan');
 const config = require('./config.js');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger.js');
 
 
 const clientes = require('./modulos/clientes/rutas.js');
@@ -49,6 +51,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/hola', (req, res) => res.send('<h1>Hola estas en tu primera App de Backend con Express</h1>'));
+
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Express Backend API Documentation',
+}));
 
 app.use('/api/clientes', clientes);
 app.use('/api/usuarios', usuarios);
